@@ -111,7 +111,6 @@ picmirc
 plasma-locale-settings.sh
 plasma-localerc
 plasma-org.kde.plasma.desktop-appletsrc
-plasma-workspace/
 plasma_calendar_holiday_regions
 plasma_workspace.notifyrc
 plasmarc
