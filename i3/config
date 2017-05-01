@@ -10,12 +10,13 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
+set $i3home ~/.config/i3
 
-set $bg-color 	         #2f343f
-set $inactive-bg-color   #2f343f
-set $text-color          #f3f4f5
-set $inactive-text-color #676E7D
-set $urgent-bg-color     #FF0000 #E53935
+set $bg-color                   #2f343f
+set $inactive-bg-color          #2f343f
+set $text-color                 #f3f4f5
+set $inactive-text-color        #676E7D
+set $urgent-bg-color            #FF0000 #E53935
 
 # class                 border  backgr. text    indicator child_border
 client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
@@ -116,7 +117,7 @@ set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9 "
-set $ws10 "10  "
+set $ws10 "10 "
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -151,26 +152,26 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+    # These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+    # Pressing left will shrink the window’s width.
+    # Pressing right will grow the window’s width.
+    # Pressing up will shrink the window’s height.
+    # Pressing down will grow the window’s height.
+    bindsym j resize shrink width 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
+    bindsym l resize shrink height 10 px or 10 ppt
+    bindsym semicolon resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+    # same bindings, but for the arrow keys
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -178,9 +179,22 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        #status_command i3status
-        status_command i3blocks
-        position top
+    #status_command i3status
+    status_command i3blocks -c $i3home/i3blocks.conf
+    position top
+    colors{
+    background #000000
+    statusline #ffffff
+    separator #666666
+
+        #<colorclass>      <border>           <background>       <text>
+
+        focused_workspace  #4c7899            #285577            #ffffff
+        active_workspace   #333333            #5f676a            #ffffff
+        inactive_workspace #333333            #222222            #888888
+        urgent_workspace   "$urgent-bg-color" "$urgent-bg-color" "$text-color"
+        binding_mode       #2f343a            #900000            #ffffff
+    }
 }
 
 # kde plasma issues
@@ -191,6 +205,10 @@ for_window [class="Kmix"] floating enable
 for_window [class="Plasmoidviewer"] floating enable
 for_window [class="Klipper"] floating enable, border none
 for_window [title="Desktop — Plasma"] kill
+# prevent spotify popup getting focus
+no_focus [class="plasmashell"]
+no_focus [window_role="pop-up"]
+
 #bindsym $mod+o exec plasma-desktop
 #bindsym $mod+m exec "killall plasma-desktop"
 
