@@ -11,6 +11,7 @@
 
 set $mod Mod4
 set $i3home ~/.config/i3
+set $term xfce4-terminal
 
 set $bg-color                   #2f343f
 set $inactive-bg-color          #2f343f
@@ -30,7 +31,7 @@ client.background       #ffffff
 focus_follows_mouse no
 
 workspace_auto_back_and_forth yes
-bindsym $mod+z workspace back_and_forth
+bindsym $mod+Tab workspace back_and_forth
 bindsym $mod+Shift+z move container to workspace back_and_forth; workspace back_and_forth
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -56,11 +57,19 @@ bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
+bindsym $mod+q kill
+
+# open home directory
+bindsym $mod+Shift+h exec dolphin
+bindsym $mod+Shift+d exec dolphin ~/Downloads
+
+bindsym $mod+i exec $term -e htop
 
 # start dmenu (a program launcher)
-#bindsym $mod+d exec dmenu_run
-bindsym $mod+d exec rofi -show run -lines 10 -eh 2 -width 100 -padding 800 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd"
-
+# bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec rofi -show run -lines 10 -opacity "85"
+#-bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd"
+# -width 100 -padding 800
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -86,6 +95,9 @@ bindsym $mod+h split h
 
 # split in vertical orientation
 bindsym $mod+v split v
+
+# split toggle
+bindsym $mod+t split toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -197,16 +209,18 @@ bar {
     }
 }
 
-# kde plasma issues
-for_window [class="Plasma-desktop"] border none
+# Avoid tiling popups, dropdown windows from plasma
+for_window [class="Plasma-desktop|plasma-desktop"] floating enable; border none
 for_window [class="Plasma-desktop|plasmashell"] floating enable
-for_window [class="krunner"] border none
-for_window [class="Kmix"] floating enable
-for_window [class="Plasmoidviewer"] floating enable
-for_window [class="Klipper"] floating enable, border none
+for_window [class="krunner"] floating enable; border none
+for_window [class="Kmix"] floating enable; border none
+for_window [class="Plasmoidviewer"] floating enable; border none
+for_window [class="Klipper"] floating enable; border none
 for_window [title="Desktop — Plasma"] kill
+for_window [class="Plasma"] floating enable; border none
 # prevent spotify popup getting focus
 no_focus [class="plasmashell"]
+no_focus [class="plasma|Plasma"]
 no_focus [window_role="pop-up"]
 
 #bindsym $mod+o exec plasma-desktop
@@ -216,6 +230,7 @@ no_focus [window_role="pop-up"]
 exec_always --no-startup-id feh --bg-scale ~/wall/forestroad.jpg
 
 exec_always --no-startup-id compton -f -i 0.85
+# -cCFb --backend glx --vsync opengl
 
 # default workspaces
 assign [class="TelegramDesktop"] → $ws9
