@@ -20,7 +20,7 @@ set $inactive-text-color        #676E7D
 set $urgent-bg-color            #FF0000 #E53935
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+client.focused          #4c7899 $bg-color #ffffff #2e9ef4   #285577
 client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
 client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
@@ -29,6 +29,8 @@ client.background       #ffffff
 
 
 focus_follows_mouse no
+
+hide_edge_borders smart
 
 workspace_auto_back_and_forth yes
 bindsym $mod+Tab workspace back_and_forth
@@ -66,8 +68,9 @@ bindsym $mod+Shift+d exec dolphin ~/Downloads
 bindsym $mod+i exec $term -e htop
 
 # start dmenu (a program launcher)
-# bindsym $mod+d exec dmenu_run
-bindsym $mod+d exec rofi -show run -lines 10 -opacity "85"
+bindsym $mod+Ctrl+d exec dmenu_run -fn "monospace 24"
+# bindsym $mod+d exec rofi -show run -lines 10 -opacity "85"
+bindsym $mod+d exec --no-startup-id krunner
 #-bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd"
 # -width 100 -padding 800
 # There also is the (new) i3-dmenu-desktop which only displays applications
@@ -75,7 +78,11 @@ bindsym $mod+d exec rofi -show run -lines 10 -opacity "85"
 # installed.
 #bindsym $mod+x exec --no-startup-id i3-dmenu-desktop
 
-bindsym $mod+Shift+l exec "$HOME/.config/i3/scripts/lock.sh"
+bindsym $mod+Shift+l exec --no-startup-id "$HOME/.config/i3/scripts/lock.sh"
+
+# cycle workspace
+bindsym Ctrl+Mod1+Right workspace next
+bindsym Ctrl+Mod1+Left workspace prev
 
 # change focus
 
@@ -109,7 +116,7 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 #bindsym $mod+Shift+space floating toggle
-bindsym $mod+Shift+p floating toggle
+bindsym $mod+Shift+f floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -195,9 +202,9 @@ bar {
     status_command i3blocks -c $i3home/i3blocks.conf
     position top
     colors{
-    background #000000
-    statusline #ffffff
-    separator #666666
+        background #222222
+        statusline #ffffff
+        separator #666666
 
         #<colorclass>      <border>           <background>       <text>
 
@@ -223,13 +230,16 @@ no_focus [class="plasmashell"]
 no_focus [class="plasma|Plasma"]
 no_focus [window_role="pop-up"]
 
+for_window [class="krunner"] move absolute position center
+
+
 #bindsym $mod+o exec plasma-desktop
 #bindsym $mod+m exec "killall plasma-desktop"
 
 # apply wallpaper
 exec_always --no-startup-id feh --bg-scale ~/wall/forestroad.jpg
 
-exec_always --no-startup-id compton -f -i 0.85
+exec_always --no-startup-id compton -fcC
 # -cCFb --backend glx --vsync opengl
 
 # default workspaces
@@ -244,3 +254,5 @@ bindsym $mod+Shift+Ctrl+s [class="Spotify"] focus
 # Goto marks
 bindsym $mod+m exec i3-input -F 'mark %s' -P 'Mark name: '
 bindsym $mod+Shift+m exec i3-input -F '[con_mark=%s] focus' -P 'Go to mark: '
+
+bindsym $mod+b border toggle
