@@ -1,0 +1,122 @@
+#!/bin/bash
+
+setup_window () {
+	min=$(zenity --entry --text "Enter minutes:")
+	if [ "$min" == "" ]; then
+		echo 0
+		exit
+	fi
+	min=$(( $min*60 ))
+	now=`date +%s`
+	echo "$(( $min + $now ))"
+}
+
+# e.g. 16:50
+setup_window_time () {
+	min=$(zenity --entry --text "Enter exact time:")
+	if [ "$min" == "" ]; then
+		echo 0
+		exit
+	fi
+	# convert 
+	min=`date --date=$min +%s`
+	echo $min
+}
+
+done_window () {
+	# paplay /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+	zenity --info --width=500 --height=250 --ellipsize --text "Timer!"
+}
+
+fix_digits () {
+	digit=$1
+	chrlen=${#digit}
+	if [ $chrlen -eq 1 ]; then
+		digit="0"$digit
+	fi
+	echo "$digit"
+}
+
+print_elapsed () {
+	ELAPSE=$1		# compute elapsed time in seconds
+	HOURS=$(( $ELAPSE/60/60 ))
+	MINS=$(( $ELAPSE/60 - ($HOURS*60) ))			# convert to minutes... (dumps remainder from division)
+	SECS=$(( $ELAPSE - ($MINS*60) - ($HOURS*60*60) )) 	# ... and seconds
+	NC='\033[0m' # No Color
+	
+	if [ $HOURS -gt 0 ]; then
+		MINS=$( fix_digits $MINS )
+		SECS=$( fix_digits $SECS )
+		echo "$HOURS:$MINS:$SECS"
+		echo "$HOURS:$MINS:$SECS"
+	elif [ $MINS -gt 0 ]; then
+		SECS=$( fix_digits $SECS )
+		echo "$MINS:$SECS"
+		echo "$MINS:$SECS"
+	elif [[ condition ]]; then
+		echo "$SECS"
+		echo "$SECS"
+	fi
+	colorise $ELAPSE
+}
+
+colorise () {
+	min=$1
+	warn=300
+	crit=60
+	warnCol="#FFFF00"
+	if [ $min -le $crit ]; then
+		exit 33;
+	elif [ $min -lt $warn ]; then
+		echo $warnCol
+	fi
+}
+
+reset () {
+	echo "0">$zfile
+}
+
+write_file () {
+	if [ $1 -ne 0 ]; then
+		echo $1>$zfile
+	fi
+}
+
+# test
+if [ "$1" == "test" ]; then
+	min=$( setup_window_time )
+	echo $min
+	echo `date +%s`
+fi
+
+zfile=`dirname $0`/zzz
+
+if [ "$BLOCK_BUTTON" == 1 ]; then
+	min=$( setup_window )
+	write_file $min
+	# echo $min>$zfile
+elif [ "$BLOCK_BUTTON" == 2 ]; then
+	reset
+elif [ "$BLOCK_BUTTON" == 3 ]; then
+	min=$( setup_window_time )
+	write_file $min
+	# echo $min>$zfile
+fi
+
+if [ ! -f $zfile ]; then
+	echo 
+	exit
+fi
+
+min=`cat $zfile`
+now=`date +%s`
+
+if [ $min -gt $now ]; then
+	print_elapsed $(( $min - $now))
+else
+	echo 
+	if [ $min -ne 0 ]; then
+		reset
+		done_window
+	fi
+fi
