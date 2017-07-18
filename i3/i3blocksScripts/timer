@@ -19,7 +19,7 @@ setup_window_time () {
 		exit
 	fi
 	# convert 
-	min=`date --date=$min +%s`
+	min=`date --date="$min" +%s`
 	echo $min
 }
 
