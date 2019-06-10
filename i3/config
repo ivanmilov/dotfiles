@@ -288,6 +288,9 @@ for_window [class="krunner"] move absolute position center
 
 exec_always --no-startup-id compton -fcC --vsync opengl-swc --backend glx --unredir-if-possible -cCb
 
+bindsym $mod+plus exec --no-startup-id compton-trans -c +10
+bindsym $mod+minus exec --no-startup-id compton-trans -c -10
+
 # default workspaces
 assign [class="TelegramDesktop"] → $ws19
 assign [class="Spotify"] → $ws20
