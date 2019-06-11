@@ -1,12 +1,13 @@
 [options]
-allow_bold = true
+#allow_bold = true
 audible_bell = false
 #bold_is_bright = true
 #cell_height_scale = 1.0
 #cell_width_scale = 1.0
 clickable_url = true
 dynamic_title = true
-font = FuraCode Nerd Font 12
+# font = FuraCode Nerd Font 12
+font = SauceCodePro Nerd Font Mono 12
 #fullscreen = true
 #icon_name = terminal
 #mouse_autohide = false
@@ -35,13 +36,13 @@ cursor_shape = underline
 #modify_other_keys = false
 
 # set size hints for the window
-#size_hints = false
+# size_hints = false
 
 # "off", "left" or "right"
 scrollbar = right
 
 [hints]
-#font = Monospace 12
+font = Monospace 12
 #foreground = #dcdccc
 #background = #3f3f3f
 #active_foreground = #e68080
@@ -67,7 +68,7 @@ scrollbar = right
 background = rgba(63, 63, 63, 0.8)
 
 # If unset, will reverse foreground and background
-highlight = #5e8d87
+# highlight = #484E4E
 
 # Colors from color0 to color254 can be set
 color0 = #3f3f3f
